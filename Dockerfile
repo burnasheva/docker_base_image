@@ -1,18 +1,10 @@
-FROM centos:6
+FROM docker.io/centos:7
 
-RUN (echo ; \
-     echo "group_package_types=mandatory";) >> /etc/yum.conf \
- && yum -y update \
- && yum -y groupinstall "Development Tools" \
- && yum clean all
+# Install SCL release package and python SCL
+RUN yum -y install centos-release-scl && \
+    yum -y install --setopt=tsflags=nodocs rh-python35
 
-RUN yum -y update \
- && yum -y install \
-      centos-release-scl \
- && yum clean all
-
-RUN yum -y install python27 \
- && yum clean all
-
-
-ENTRYPOINT ["scl", "enable", "python27", "--" "bash"]
+# Enable rh-python scl binary
+COPY entrypoint.sh /usr/bin/entrypoint.sh
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
