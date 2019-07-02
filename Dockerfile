@@ -8,3 +8,4 @@ RUN yum -y install centos-release-scl && \
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
+CMD ["python", "--version"]
